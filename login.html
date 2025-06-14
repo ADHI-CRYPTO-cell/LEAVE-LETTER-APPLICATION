@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login | College Portal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Add responsive base font size */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --admin: #8e44ad;
+            --faculty: #16a085;
+            --student: #2980b9;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            /* Dark theme variables */
+            --bg-dark: #1a1f2b;
+            --header-dark: rgba(32, 37, 49, 0.95);
+            --header-border: rgba(255, 255, 255, 0.1);
+            --text-bright: #ffffff;
+            --text-primary-dark: #e2e8f0;
+            --text-secondary-dark: #cbd5e1;
+            --text-muted-dark: #94a3b8;
+            --glow-intense: 0 0 20px rgba(255, 255, 255, 0.4);
+            --theme-btn-size: 45px;
+            font-size: clamp(14px, 1vw, 16px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .university-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start; /* Change from space-between to flex-start */
+            align-items: center;
+            padding: 15px 5%;
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--header-border);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateY(-100%);
+            animation: slideDown 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px; /* Add margin to create space between logo and text */
+        }
+
+        .university-logo {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .university-logo:hover {
+            transform: scale(1.65);
+        }
+
+        .university-name {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            padding-right: 20px;
+        }
+
+        body.dark-theme .university-name {
+            color: var(--text-bright);
+            text-shadow: var(--glow-intense);
+            font-weight: 700;
+        }
+
+        .university-name::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 30px;
+            width: 2px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-top: 100px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-theme .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--student);
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            position: relative;
+        }
+
+        body.dark-theme .page-title {
+            color: var(--text-bright);
+            text-shadow: var(--glow-intense);
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--student);
+            border-radius: 2px;
+        }
+
+        .role-icon {
+            font-size: 2.5rem;
+            color: var(--student);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 2rem;
+            background: #ffffff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .form-group {
+            background: transparent;
+        }
+
+        .form-group label {
+            display: inline-block;
+            background: #ffffff;
+            padding: 0 0.5rem;
+            color: #536475;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: absolute;
+            top: -0.8rem;
+            left: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .form-group label {
+            background: transparent;
+            color: var(--text-primary-dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1.5px solid #e1e8ef;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        body.dark-theme .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-bright);
+        }
+
+        .form-control:hover {
+            border-color: #cbd5e1;
+        }
+
+        .form-control:focus {
+            border-color: var(--student);
+            box-shadow: 0 2px 15px rgba(41, 128, 185, 0.08);
+            outline: none;
+        }
+
+        body.dark-theme .form-control:focus {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group:focus-within label {
+            color: var(--student);
+            font-weight: 600;
+        }
+
+        /* Clean error state */
+        .form-control.error {
+            border-color: #e74c3c;
+            background: white;
+        }
+
+        .error-message {
+            font-size: 0.8rem;
+            color: #e74c3c;
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-2px); }
+            40%, 60% { transform: translateX(2px); }
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--student), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn:after {
+            content: '';
+            position: absolute;
+            background: var(--student);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            transition: 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(41, 128, 185, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn:hover:after {
+            background: linear-gradient(45deg, var(--secondary), var(--student));
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.2);
+        }
+
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(41, 128, 185, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0); }
+        }
+
+        .btn:focus {
+            animation: buttonPulse 1.5s infinite;
+            outline: none;
+        }
+
+        /* Remove forgot-password related styles */
+        .forgot-password,
+        .forgot-password:hover {
+            display: none;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.08;
+            border-radius: 50%;
+            animation: float 20s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            filter: blur(1px);
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: var(--student);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: var(--student);
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            background: var(--student);
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translateY(-50px) rotate(180deg) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) rotate(360deg) scale(1);
+            }
+        }
+
+        @keyframes slideDown {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(33, 33, 33, 0.95) 100%);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            perspective: 1500px;
+        }
+
+        .epic-loader {
+            position: relative;
+            transform-style: preserve-3d;
+            width: 300px;
+            height: 300px;
+        }
+
+        .portal-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(41, 128, 185, 0.3);
+            animation: rotateRing 3s linear infinite;
+            box-shadow: 0 0 20px rgba(41, 128, 185, 0.2);
+        }
+
+        .portal-ring:nth-child(1) { animation-duration: 3s; }
+        .portal-ring:nth-child(2) { width: 80%; height: 80%; animation-duration: 4s; animation-direction: reverse; }
+        .portal-ring:nth-child(3) { width: 60%; height: 60%; animation-duration: 5s; }
+
+        .portal-core {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, #2980b9 0%, #3498db 100%);
+            border-radius: 50%;
+            left: 30%;
+            top: 30%;
+            animation: pulseCore 2s ease-in-out infinite;
+        }
+
+        .role-icon-3d {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: floatIcon 2s ease-in-out infinite;
+        }
+
+        .loading-progress {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2980b9, #3498db);
+            animation: loadProgress 2.5s ease-in-out forwards;
+        }
+
+        .loading-text {
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: glowText 2s ease-in-out infinite;
+        }
+
+        .portal-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .portal-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: portalParticle 2s ease-out infinite;
+        }
+
+        @keyframes rotateRing {
+            0% { transform: rotateX(60deg) rotateZ(0); }
+            100% { transform: rotateX(60deg) rotateZ(360deg); }
+        }
+
+        @keyframes pulseCore {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes glowText {
+            0%, 100% { opacity: 0.7; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            50% { opacity: 1; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+        }
+
+        @keyframes portalParticle {
+            0% { transform: rotate(0deg) translateX(150px) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: rotate(360deg) translateX(0) rotate(-360deg) scale(0); opacity: 0; }
+        }
+
+        /* Update responsive styles */
+        @media screen and (max-width: 1200px) {
+            .container {
+                max-width: min(90%, 600px);
+                padding: clamp(1rem, 3vw, 2rem);
+            }
+        }
+
+        @media screen and (max-width: 992px) {
+            .university-header {
+                padding: clamp(0.8rem, 2vw, 1.2rem) 4%;
+            }
+
+            .university-name {
+                font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            }
+
+            .university-logo {
+                height: clamp(35px, 5vw, 50px);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .university-header {
+                flex-direction: row;
+                gap: 1rem;
+                padding: 0.8rem 3%;
+            }
+            
+            .university-logo {
+                height: clamp(30px, 4vw, 35px);
+                margin: 0;
+            }
+            
+            .university-name {
+                font-size: clamp(0.9rem, 2vw, 1rem);
+                line-height: 1.2;
+            }
+            
+            .container {
+                margin-top: max(80px, 15vh);
+                padding: clamp(0.8rem, 2vw, 1rem);
+            }
+
+            .login-card {
+                padding: clamp(1.5rem, 4vw, 2rem) clamp(1rem, 3vw, 1.5rem);
+            }
+
+            .page-title {
+                font-size: clamp(1.3rem, 3vw, 1.5rem);
+            }
+
+            .role-icon {
+                font-size: clamp(1.8rem, 4vw, 2rem);
+            }
+
+            .form-control {
+                padding: clamp(0.6rem, 2vw, 0.8rem) clamp(0.8rem, 2vw, 1rem);
+                font-size: clamp(14px, 2vw, 16px);
+            }
+
+            .btn {
+                padding: clamp(0.6rem, 2vw, 0.8rem);
+                font-size: clamp(14px, 2vw, 16px);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .container {
+                margin-top: max(70px, 12vh);
+                width: 95%;
+            }
+
+            .login-card {
+                padding: 1.2rem 1rem;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.2rem;
+            }
+
+            .floating-shapes {
+                opacity: 0.05;
+            }
+        }
+
+        /* Add landscape mode optimization */
+        @media screen and (max-height: 600px) and (orientation: landscape) {
+            .container {
+                margin-top: max(60px, 10vh);
+                padding: 0.8rem;
+            }
+
+            .login-card {
+                padding: 1rem;
+            }
+
+            .role-icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .form-group {
+                margin-bottom: 0.8rem;
+            }
+
+            .university-header {
+                padding: 0.5rem 3%;
+            }
+        }
+
+        /* Add touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn {
+                padding: max(0.8rem, 4vh) 2rem;
+                margin-top: max(1rem, 3vh);
+            }
+
+            .form-control {
+                padding: max(0.8rem, 3vh) 1rem;
+            }
+
+            input {
+                font-size: 16px !important; /* Prevent zoom on iOS */
+            }
+
+            .back-button {
+                padding: 0.5rem 0;
+            }
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            padding: 0.5rem 1rem;
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 25px;
+            background: rgba(236, 240, 241, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(41, 128, 185, 0.2),
+                rgba(41, 128, 185, 0)
+            );
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            color: var(--student);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.2);
+        }
+
+        .back-button:hover:before {
+            transform: translateX(0);
+        }
+
+        .back-button i {
+            margin-right: 0.7rem;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover i {
+            transform: translateX(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .back-button {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Dark theme styles */
+        body.dark-theme {
+            background: var(--bg-dark);
+        }
+
+        body.dark-theme .university-header {
+            background: var(--header-dark);
+            border-bottom: 1px solid var(--header-border);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-theme .university-name {
+            color: var(--text-bright);
+            text-shadow: var(--glow-intense);
+            font-weight: 700;
+        }
+
+        body.dark-theme .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .page-title {
+            color: var(--text-bright);
+            text-shadow: var(--glow-intense);
+        }
+
+        body.dark-theme .form-group label {
+            background: transparent;
+            color: var(--text-primary-dark);
+            font-weight: 500;
+        }
+
+        body.dark-theme .form-control {
+            color: var(--text-bright);
+        }
+
+        body.dark-theme .form-control::placeholder {
+            color: var(--text-muted-dark);
+        }
+
+        body.dark-theme .role-description {
+            color: var(--text-secondary-dark);
+        }
+
+        body.dark-theme .back-button {
+            color: var(--text-primary-dark);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .back-button:hover {
+            color: var(--text-bright);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: var(--theme-btn-size);
+            height: var(--theme-btn-size);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #ffd700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s;
+            z-index: 1001;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle i {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes quickSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .theme-toggle.spinning i {
+            animation: quickSpin 0.5s ease-out forwards;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="university-header">
+        <div class="logo-container">
+            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.drngpit.ac.in%2Fassets%2Fimages%2Flogo%2Fngp-itech-logo.png&f=1&nofb=1&ipt=ca50c483f8fae3aeeb1107305fe7f1eecac07cac1029629a33ac7952ba889bde&ipo=images" alt="College Logo" class="university-logo">
+        </div>
+        <h1 class="university-name">Dr. N.G.P Institute of Technology</h1>
+    </div>
+
+    <div class="container">
+        <div class="login-card">
+            <!-- Update the back button HTML structure -->
+            <a href="role_selection.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Change Role</span>
+            </a>
+            <div class="role-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <h1 class="page-title">Student Login</h1>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" class="form-control" placeholder="Enter your student ID" required>
+                    <div class="error-message" id="studentIdError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                
+                <!-- Update the button HTML -->
+                <button type="submit" class="btn">
+                    <span>Login</span>
+                </button>
+                <!-- Remove the forgot password link -->
+            </form>
+        </div>
+    </div>
+
+    <div class="loading-overlay">
+        <div class="epic-loader student">
+            <div class="portal-ring"></div>
+            <div class="portal-ring"></div>
+            <div class="portal-ring"></div>
+            <div class="portal-core">
+                <i class="role-icon-3d fas fa-user-graduate"></i>
+            </div>
+            <div class="portal-particles"></div>
+            <div class="loading-progress">
+                <div class="progress-bar"></div>
+            </div>
+            <div class="loading-text">Authenticating</div>
+        </div>
+    </div>
+
+    <!-- Add theme toggle button before closing body tag -->
+    <button class="theme-toggle" aria-label="Toggle dark theme">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <script>
+        // Add before existing script
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.querySelector('.theme-toggle i');
+            const button = document.querySelector('.theme-toggle');
+            
+            button.classList.add('spinning');
+            
+            setTimeout(() => {
+                button.classList.remove('spinning');
+                body.classList.toggle('dark-theme');
+                icon.className = body.classList.contains('dark-theme') ? 'fas fa-moon' : 'fas fa-sun';
+                localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+            }, 500);
+        }
+
+        // Initialize theme
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.querySelector('.theme-toggle i').className = 'fas fa-moon';
+            }
+            document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get role from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role') || 'student';
+
+            // Role-specific configurations
+            const roleConfig = {
+                student: {
+                    color: '#2980b9',
+                    icon: 'fa-user-graduate',
+                    title: 'Student Login'
+                },
+                faculty: {
+                    color: '#16a085',
+                    icon: 'fa-chalkboard-teacher',
+                    title: 'Faculty Login'
+                },
+                admin: {
+                    color: '#8e44ad',
+                    icon: 'fa-user-shield',
+                    title: 'Admin Login'
+                }
+            };
+
+            // Apply role-specific styles
+            const config = roleConfig[role];
+            document.documentElement.style.setProperty('--student', config.color);
+            document.querySelector('.role-icon i').className = `fas ${config.icon}`;
+            document.querySelector('.role-icon-3d').className = `role-icon-3d fas ${config.icon}`;
+            document.querySelector('.page-title').textContent = config.title;
+            document.querySelector('#studentId').placeholder = `Enter your ${role} ID`;
+
+            // Form submission
+            const loginForm = document.getElementById('loginForm');
+            const overlay = document.querySelector('.loading-overlay');
+            const inputs = loginForm.querySelectorAll('.form-control');
+            
+            // Input validation
+            function validateInput(input) {
+                const errorElement = document.getElementById(`${input.id}Error`);
+                let isValid = true;
+
+                if (!input.value.trim()) {
+                    showError(input, errorElement, 'This field is required');
+                    isValid = false;
+                } else if (input.id === 'studentId' && !/^\d{8}$/.test(input.value)) {
+                    showError(input, errorElement, 'Please enter a valid 8-digit ID');
+                    isValid = false;
+                } else if (input.id === 'password' && input.value.length < 6) {
+                    showError(input, errorElement, 'Password must be at least 6 characters');
+                    isValid = false;
+                } else {
+                    clearError(input, errorElement);
+                }
+
+                return isValid;
+            }
+
+            function showError(input, errorElement, message) {
+                input.classList.add('error');
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+            }
+
+            function clearError(input, errorElement) {
+                input.classList.remove('error');
+                errorElement.textContent = '';
+                errorElement.classList.remove('show');
+            }
+
+            // Real-time validation
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    validateInput(input);
+                });
+
+                input.addEventListener('blur', () => {
+                    validateInput(input);
+                });
+            });
+
+            // Form submission with validation
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (!validateInput(input)) {
+                        isValid = false;
+                    }
+                });
+
+                if (isValid) {
+                    overlay.style.display = 'flex';
+                    overlay.style.opacity = '0';
+                    requestAnimationFrame(() => {
+                        overlay.style.opacity = '1';
+                        overlay.style.transition = 'opacity 0.3s ease';
+                    });
+                    
+                    // Create portal particles
+                    const particles = document.querySelector('.portal-particles');
+                    particles.innerHTML = '';
+                    const colors = [config.color, config.color.replace('rgb', 'rgba').replace(')', ',0.8)')];
+                    
+                    for (let i = 0; i < 30; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'portal-particle';
+                        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        particle.style.left = '50%';
+                        particle.style.top = '50%';
+                        particle.style.transform = `rotate(${Math.random() * 360}deg) translateX(${Math.random() * 100 + 50}px)`;
+                        particle.style.animationDelay = `${Math.random() * 2}s`;
+                        particles.appendChild(particle);
+                    }
+
+                    // Simulate API call
+                    setTimeout(() => {
+                        const userId = document.getElementById('studentId').value;
+                        const password = document.getElementById('password').value;
+
+                        // Mock API response
+                        const mockAuth = Math.random() > 0.1; // 90% success rate
+
+                        if (mockAuth) {
+                            document.querySelector('.loading-text').textContent = 'Success!';
+                            setTimeout(() => {
+                                overlay.style.opacity = '0';
+                                setTimeout(() => {
+                                    overlay.style.display = 'none';
+                                    // window.location.href = redirectURLs[role];
+                                    loginForm.reset();
+                                }, 300);
+                            }, 500);
+                        } else {
+                            document.querySelector('.loading-text').textContent = 'Authentication Failed';
+                            setTimeout(() => {
+                                overlay.style.opacity = '0';
+                                setTimeout(() => {
+                                    overlay.style.display = 'none';
+                                    showError(document.getElementById('password'), document.getElementById('passwordError'), 'Invalid credentials');
+                                }, 300);
+                            }, 500);
+                        }
+                    }, 2000);
+                } else {
+                    const firstError = loginForm.querySelector('.error');
+                    if (firstError) {
+                        firstError.focus();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
